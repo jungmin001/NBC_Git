@@ -3,6 +3,7 @@
 #include "SpawnVolume.h"
 #include "MyGameInstance.h"
 #include "MyPlayerController.h"
+#include "MyCharacter.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/UserWidget.h"
 #include "CoinItem.h"
@@ -176,6 +177,16 @@ void AMyGameState::UpdateHUD()
 				if (UTextBlock* LevelIndexText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Level"))))
 				{
 					LevelIndexText->SetText(FText::FromString(FString::Printf(TEXT("Level : %d"), CurrentLevelIndex + 1)));
+				}
+
+				if (UTextBlock* HealthText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("Health"))))
+				{
+					AMyCharacter* MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+					if (MyCharacter)
+					{
+						float Health = MyCharacter->GetHealth();
+						HealthText->SetText(FText::FromString(FString::Printf(TEXT("HP : %.1f"), Health)));
+					}
 				}
 			}
 		}
